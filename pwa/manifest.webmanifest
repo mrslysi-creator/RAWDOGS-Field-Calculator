@@ -1,0 +1,25 @@
+{
+  "name": "RAWDOGS Field Calculator",
+  "short_name": "RAWDOGS Calc",
+  "description": "Offline WARDOGS L81 mortar and SPH-2 / SPA field calculator.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111512",
+  "theme_color": "#1c2f20",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
