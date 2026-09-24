@@ -26,7 +26,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf _site /tmp/rawdogs-pwa
-          mkdir -p _site /tmp/rawdogs-pwa
+          mkdir -p _site _site/assets /tmp/rawdogs-pwa
 
           # Publish the phone/PWA source.
           cp -R pwa/. _site/
