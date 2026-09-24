@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#1c2f20">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="RAWDOGS Calc">
+<title>RAWDOGS Field Calculator</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<style>
+:root{
+  --paper:#ceb176;--paper-hi:#e1c98d;--paper-edge:#856d40;--ink:#211b10;
+  --panel:rgba(1,4,3,.82);--panel2:rgba(1,4,3,.90);--line:rgba(255,255,255,.23);
+  --blue:#1769c7;--red:#c93131;--green:#209845;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:#0b0d0c;color:#fff;font-family:Segoe UI,Arial,sans-serif}
+body{min-height:100dvh;overflow-x:hidden}
+button,input{font:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.phone-app{
+  position:relative;width:100%;min-height:100dvh;margin:0 auto;
+  background-size:132px 132px;background-repeat:repeat;
+}
+.phone-app::before{content:"";position:fixed;inset:0;background:rgba(0,0,0,.46);pointer-events:none}
+.phone-app[data-team="blue"]{background-image:url('assets/camo_blue.png')}
+.phone-app[data-team="red"]{background-image:url('assets/camo_red.png')}
+.phone-app[data-team="green"]{background-image:url('assets/camo_green.png')}
+.phone-app[data-team="none"]{background-image:url('assets/camo_green.png');filter:saturate(.55)}
+.view{position:relative;z-index:2;min-height:100dvh;padding:max(8px,env(safe-area-inset-top)) 42px max(8px,env(safe-area-inset-bottom)) 8px}
+.view.hidden{display:none}
+.paper-btn{
+  background:var(--paper);color:var(--ink);border:1px solid var(--paper-edge);border-radius:8px;
+  min-height:36px;padding:6px 9px;font-weight:950;box-shadow:inset 0 1px 0 rgba(255,255,255,.34)
+}
+.paper-btn:active{transform:translateY(1px)}
+.paper-btn:focus-visible,input:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.header{display:grid;grid-template-columns:38px 1fr;gap:7px;align-items:center;margin-bottom:7px}
+.logo{width:38px;height:38px;border-radius:8px}
+.brand-title{font-size:10px;font-weight:950;letter-spacing:.12em;margin-bottom:3px}
+.weapon-wrap{position:relative}
+.weapon-btn{width:100%;min-height:35px;text-align:left;padding:5px 8px;font-size:13px}
+.weapon-menu{
+  display:none;position:absolute;z-index:40;left:0;right:0;top:39px;padding:5px;
+  background:var(--paper);color:var(--ink);border:1px solid var(--paper-edge);border-radius:8px;
+  box-shadow:0 8px 22px rgba(0,0,0,.5)
+}
+.weapon-menu.open{display:block}
+.weapon-menu button{display:block;width:100%;border:0;background:transparent;text-align:left;padding:8px;border-radius:6px;font-weight:950;color:inherit}
+.weapon-sub{display:block;font-size:9px;font-weight:700;opacity:.7;margin-top:2px}
+.team-row{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:7px}
+.team-btn{min-height:32px;padding:4px 3px;font-size:12px}
+.team-btn.selected.blue{background:var(--blue);color:#fff;border-color:#0c447f;outline:2px solid #bddaff}
+.team-btn.selected.red{background:var(--red);color:#fff;border-color:#7d1818;outline:2px solid #ffc6c6}
+.team-btn.selected.green{background:var(--green);color:#fff;border-color:#0e5f29;outline:2px solid #c4f5d1}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px;margin-bottom:7px}
+.panel-line{display:flex;align-items:center;justify-content:space-between;gap:7px;margin-bottom:6px}
+.panel-title{font-size:10px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:#fff}
+.preset-row{display:flex;gap:5px}
+.preset-btn{min-width:38px;min-height:28px;padding:3px 7px;font-size:11px}
+.preset-btn.selected{background:var(--paper-hi);outline:2px solid #f4e2b0}
+.field{display:grid;gap:2px}
+.field label{font-size:9px;font-weight:950;letter-spacing:.055em;color:#ddd;text-transform:uppercase}
+input{
+  width:100%;height:34px;background:rgba(0,0,0,.67);color:#fff;border:1px solid rgba(255,255,255,.30);
+  border-radius:7px;padding:5px 8px;font-size:14px
+}
+.xy{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.actions{display:grid;grid-template-columns:1.15fr .85fr;gap:6px;margin-bottom:7px}
+.actions .paper-btn{min-height:38px}
+.results{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:7px;margin-bottom:5px}
+.result-name{font-size:11px;color:#e6ebe6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:5px}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.result-grid.dual{grid-template-columns:repeat(4,1fr)}
+.result-cell{text-align:center;min-width:0;padding:2px}
+.result-label{font-size:8px;font-weight:950;letter-spacing:.055em;text-transform:uppercase;line-height:1.05}
+.result-value{font-size:19px;font-weight:950;line-height:1.15;white-space:nowrap}
+.result-cell.hidden{display:none}
+.result-note{font-size:9px;line-height:1.25;color:#d3d8d3;text-align:center;margin-top:4px;min-height:12px}
+.foot{font-size:8px;color:#bfc5bf;text-align:center;line-height:1.2;padding-bottom:2px}
+.folder-tab{
+  position:fixed;z-index:25;right:0;top:28%;width:34px;height:142px;background:var(--paper);color:var(--ink);
+  border:1px solid var(--paper-edge);border-right:0;border-radius:9px 0 0 9px;
+  writing-mode:vertical-rl;text-orientation:mixed;font-size:11px;font-weight:950;letter-spacing:.07em
+}
+.old-view{padding-right:8px}
+.old-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:7px}
+.old-folder-title{
+  background:var(--paper);color:var(--ink);border:1px solid var(--paper-edge);border-radius:10px 10px 4px 4px;
+  padding:9px 12px;font-size:18px;font-weight:950;letter-spacing:.04em;flex:1
+}
+.old-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:7px}
+.old-sub{background:rgba(0,0,0,.70);border:1px solid var(--line);border-radius:8px;padding:6px 8px;font-size:10px;color:#ddd;margin-bottom:7px}
+.old-card{
+  position:relative;background:rgba(226,201,145,.94);color:var(--ink);border:1px solid var(--paper-edge);
+  border-radius:10px;padding:9px 47px 9px 9px;margin-bottom:7px;box-shadow:0 4px 12px rgba(0,0,0,.26)
+}
+.old-card-name{font-size:15px;font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.old-meta{font-size:12px;font-weight:950;margin-top:2px;line-height:1.25}
+.old-coords,.old-extra,.old-time{font-size:10px;margin-top:2px;opacity:.78}
+.lamp-bezel{
+  position:absolute;right:9px;top:9px;width:29px;height:29px;border-radius:50%;border:4px solid #969696;background:#505050;
+  box-shadow:0 1px 3px rgba(0,0,0,.55),inset 0 0 2px #111
+}
+.lamp{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 34% 28%,#c15858 0 14%,#7e2828 42%,#321010 75%)}
+.old-card.recalled .lamp{background:radial-gradient(circle at 34% 28%,#f5fff6 0 12%,#95ffad 28%,#35e86d 55%,#087025 82%);box-shadow:0 0 10px rgba(40,240,95,.85)}
+.return-btn{width:100%;margin-top:6px;min-height:33px;background:#272219;color:#fff;border:0;border-radius:7px;font-weight:950}
+.old-empty{background:rgba(226,201,145,.94);color:var(--ink);border-radius:9px;padding:12px;font-size:12px}
+.team-modal{position:fixed;z-index:60;inset:0;background:rgba(5,7,5,.88);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(3px)}
+.team-modal.hidden{display:none}
+.team-card{width:min(360px,100%);background:#101210;border:1px solid var(--line);border-radius:13px;padding:15px;text-align:center}
+.team-card img{width:56px;height:56px;border-radius:10px}
+.team-card h2{font-size:20px;margin:5px 0}
+.team-card p{font-size:12px;color:#ccd1cc;margin:0 0 12px}
+.install-tip{display:none;margin-top:7px;font-size:9px;color:#cdd3cd}
+.install-tip.show{display:block}
+@media(max-width:345px){
+  .view{padding-left:5px;padding-right:39px}.result-grid.dual{grid-template-columns:repeat(2,1fr)}
+  .result-grid.dual .result-cell{padding:1px}.result-value{font-size:18px}
+}
+@media(min-width:600px){
+  .phone-app{max-width:480px;min-height:860px;margin:12px auto;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.24)}
+  .phone-app::before{position:absolute}.folder-tab{right:calc((100vw - 480px)/2);top:210px}
+}
+</style>
+<script src="weapons/l81.js"></script>
+<script src="weapons/sph2.js"></script>
+<script src="js/engine.js"></script>
+</head>
+<body>
+<div class="phone-app" id="app" data-team="none">
+  <button id="folderTab" class="folder-tab" type="button">OLD TARGETS</button>
+
+  <main id="mainView" class="view">
+    <div class="header">
+      <img class="logo" src="assets/rawdogs_icon.png" alt="RAWDOGS">
+      <div>
+        <div class="brand-title">RAWDOGS FIELD CALCULATOR</div>
+        <div class="weapon-wrap">
+          <button id="weaponBtn" class="paper-btn weapon-btn" type="button">WEAPON: LOADING…</button>
+          <div id="weaponMenu" class="weapon-menu"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="team-row" aria-label="Team selection">
+      <button class="paper-btn team-btn blue" data-team="blue" type="button">BLUE</button>
+      <button class="paper-btn team-btn red" data-team="red" type="button">RED</button>
+      <button class="paper-btn team-btn green" data-team="green" type="button">GREEN</button>
+    </div>
+
+    <section class="panel">
+      <div class="panel-line">
+        <div class="panel-title" id="positionTitle">Firing position</div>
+        <div class="preset-row">
+          <button id="positionA" class="paper-btn preset-btn selected" type="button">A</button>
+          <button id="positionB" class="paper-btn preset-btn" type="button">B</button>
+        </div>
+      </div>
+      <div class="field"><label for="positionName">Reference name</label><input id="positionName" autocomplete="off"></div>
+      <div class="xy">
+        <div class="field"><label for="positionX">X</label><input id="positionX" inputmode="decimal" autocomplete="off"></div>
+        <div class="field"><label for="positionY">Y</label><input id="positionY" inputmode="decimal" autocomplete="off"></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title" style="margin-bottom:5px">Target</div>
+      <div class="field"><label for="targetName">Reference name</label><input id="targetName" autocomplete="off" placeholder="Tower 2 / Green FOB / Blue APC"></div>
+      <div class="xy">
+        <div class="field"><label for="targetX">X</label><input id="targetX" inputmode="decimal" autocomplete="off"></div>
+        <div class="field"><label for="targetY">Y</label><input id="targetY" inputmode="decimal" autocomplete="off"></div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button id="calculateBtn" class="paper-btn" type="button">CALCULATE</button>
+      <button id="newTargetBtn" class="paper-btn" type="button">NEW TARGET</button>
+    </div>
+
+    <section class="results" aria-live="polite">
+      <div id="resultName" class="result-name">Enter a target</div>
+      <div id="resultGrid" class="result-grid">
+        <div class="result-cell"><div class="result-label">Bearing</div><div id="bearingValue" class="result-value">---</div></div>
+        <div class="result-cell"><div class="result-label">Range</div><div id="rangeValue" class="result-value">---</div></div>
+        <div class="result-cell"><div id="outputLabel" class="result-label">MIL</div><div id="outputValue" class="result-value">---</div></div>
+        <div id="secondaryCell" class="result-cell hidden"><div id="secondaryLabel" class="result-label">HIGH ARC</div><div id="secondaryValue" class="result-value">---</div></div>
+      </div>
+      <div id="resultNote" class="result-note">Firing position stays saved when NEW TARGET is pressed.</div>
+    </section>
+
+    <div class="foot"><span id="dataBadge"></span> • offline-capable • no adverts • no tracking</div>
+  </main>
+
+  <section id="oldView" class="view old-view hidden">
+    <div class="old-head"><div class="old-folder-title">OLD TARGETS</div></div>
+    <div class="old-actions">
+      <button id="backMainBtn" class="paper-btn" type="button">BACK TO MAIN</button>
+      <button id="oldNewTargetBtn" class="paper-btn" type="button">NEW TARGET</button>
+    </div>
+    <div class="old-sub">Short-term firing memory only. Targets expire after 30 minutes. Red = stored; green = currently recalled.</div>
+    <div id="oldList"></div>
+  </section>
+
+  <div id="teamModal" class="team-modal">
+    <div class="team-card">
+      <img src="assets/rawdogs_icon.png" alt="">
+      <h2>SELECT YOUR TEAM</h2>
+      <p>Choose your current team for this rotation. This choice does not persist into a new app session.</p>
+      <div class="team-row">
+        <button class="paper-btn team-btn blue" data-team="blue" type="button">BLUE</button>
+        <button class="paper-btn team-btn red" data-team="red" type="button">RED</button>
+        <button class="paper-btn team-btn green" data-team="green" type="button">GREEN</button>
+      </div>
+      <div id="installTip" class="install-tip">After first load, this PWA can work without Wi-Fi or mobile signal.</div>
+    </div>
+  </div>
+</div>
+<script src="js/mobile-app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
