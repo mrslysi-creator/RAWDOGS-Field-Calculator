@@ -2,20 +2,54 @@
 
 Free, open-source field calculator for the **WARDOGS** community, created by **RAWDOGS**.
 
-The project provides the same verified calculation engine and weapon calibration data across a Windows desktop build and a phone-friendly web/PWA build, with the calculator source and data visible in this repository.
+The project provides the same verified calculation engine and weapon calibration data across Windows, desktop web and a phone-friendly Progressive Web App, with the calculator source and data visible in this repository.
+
+## Use / download
+
+### Phone app / PWA
+
+**Open the phone app:**  
+https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/
+
+On a supported phone browser, use **Add to Home Screen** / **Install App**. After the initial successful load the PWA is designed to work offline.
+
+**Download the preserved Phone/PWA Build 0.1 ZIP:**  
+https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/raw/refs/heads/main/downloads/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_1.zip
+
+### Desktop web app
+
+**Open the desktop browser version:**  
+https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/desktop/
+
+### Windows Build 2.4
+
+**Download the full stable Windows Build 2.4 ZIP:**  
+https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/raw/refs/heads/main/downloads/RAWDOGS_Field_Calculator_Build_2_4_Windows.zip
+
+**Download the standalone Build 2.4 EXE:**  
+https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/raw/refs/heads/main/downloads/RAWDOGS%20Field%20Calculator.exe
+
+The files above are the preserved originals, not rebuilt substitutes.
+
+| File | SHA-256 |
+|---|---|
+| Windows Build 2.4 ZIP | `92935616dd6fe8bd3e928efa8bc82144cf46915ce53ec7b2e4e8a953493d2fb8` |
+| Windows Build 2.4 EXE | `aabf819039ef62a2e20051c85f7cbd1d08bb78b7b7997def17f3687be1d3cbe7` |
+| Phone/PWA Build 0.1 ZIP | `a66f6835dd7ac68f128cfc1b67c9eb5121cd0facc8a167f82861e0eb446a46be` |
 
 ## Current builds
 
 | Build | Platform | Status |
 |---|---|---|
 | **2.4** | Windows desktop | Current stable reference build |
-| **0.1** | Phone / PWA | Source imported; public phone deployment/testing is next |
+| **0.1** | Phone / PWA | Published through GitHub Pages |
+| **Web** | Desktop browser | Published through GitHub Pages |
 
 The Windows Build 2.4 application was verified to open and populate correctly and to use the RAWDOGS application icon.
 
-## Source now in this repository
+## Source in this repository
 
-The preserved Windows Build 2.4 executable contains its HTML/JavaScript calculator application internally. Those embedded files were recovered from the preserved Build 2.4 executable and committed under:
+The preserved Windows Build 2.4 executable contains its HTML/JavaScript calculator application internally. Those embedded calculator files were recovered from the preserved executable and committed under:
 
 - `src/desktop/index.html`
 - `src/desktop/js/app.js`
@@ -42,19 +76,15 @@ src/
 
 weapons/            verified L81 and SPH-2 calibration data
 pwa/                phone/PWA source
+downloads/          preserved downloadable builds
 builds/windows/2.4/ Build 2.4 notes, shortcut scripts and checksums
 docs/               installation and calculation documentation
+.github/workflows/  GitHub Pages deployment
 ```
 
-## Downloads
+## Phone / PWA notes
 
-The preserved **Windows Build 2.4 ZIP** is the current stable Windows download reference.
-
-Release-file publication is being completed separately from the source import. The checksums for the preserved EXE/icon are already recorded under `builds/windows/2.4/SHA256.txt`.
-
-## Phone / PWA
-
-The phone version is a Progressive Web App (PWA). Its source includes the web-app manifest and service worker so that, once published over HTTPS, a supported phone browser can install it to the home screen and use it offline after the initial successful load.
+The PWA includes the web-app manifest and service worker required for installation/offline use. The live deployment restores the original RAWDOGS PNG icon and camouflage artwork directly from the preserved Phone/PWA Build 0.1 package.
 
 The PWA intentionally does **not** include the later experimental SPH-2 pitch/terrain compensation work; that remains future work after controlled testing.
 
