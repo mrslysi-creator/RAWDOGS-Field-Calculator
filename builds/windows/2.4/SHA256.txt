@@ -1,0 +1,2 @@
+aabf819039ef62a2e20051c85f7cbd1d08bb78b7b7997def17f3687be1d3cbe7  RAWDOGS Field Calculator.exe
+9459c4e8ea470baeb7c86a817cf572d240a6de5c27b4e82c6e48b9e6968c4c00  RAWDOGS_Field_Calculator.ico
