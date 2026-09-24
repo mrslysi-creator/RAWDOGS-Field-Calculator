@@ -1,0 +1,115 @@
+name: Publish RAWDOGS web apps
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build Pages site
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          cp -R pwa/. _site/
+
+          # Preserve the recovered source tree unchanged.  Pages uses generated
+          # SVG fallbacks until the original binary artwork is added to GitHub.
+          mkdir -p _site/assets
+          cat > _site/assets/rawdogs_icon.svg <<'SVG'
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <rect width="512" height="512" rx="90" fill="#111"/>
+            <path d="M88 100h336v250L256 448 88 350z" fill="#262b27" stroke="#d0b373" stroke-width="18"/>
+            <path d="M160 165l55-55 41 53 41-53 55 55-26 112-70 68-70-68z" fill="#e9e9e9"/>
+            <path d="M207 231l49 33 49-33-17 61-32 27-32-27z" fill="#1a1a1a"/>
+            <text x="256" y="397" text-anchor="middle" font-family="Arial,sans-serif" font-size="54" font-weight="900" fill="#fff">RAWDOGS</text>
+          </svg>
+          SVG
+
+          cat > _site/assets/camo_blue.svg <<'SVG'
+          <svg xmlns="http://www.w3.org/2000/svg" width="132" height="132" viewBox="0 0 132 132">
+            <rect width="132" height="132" fill="#172638"/>
+            <path d="M0 18L38 0l30 23-15 31L12 61zM68 23l39-17 25 28v32L93 55zM22 78l31-20 39 21-8 38-52 15L0 112zM91 82l41-18v68H85z" fill="#244a73"/>
+            <path d="M12 6l26 13-17 25L0 37zM58 55l27-18 20 21-19 21zM42 96l31-12 16 25-37 17z" fill="#0e1825" opacity=".9"/>
+          </svg>
+          SVG
+
+          cat > _site/assets/camo_red.svg <<'SVG'
+          <svg xmlns="http://www.w3.org/2000/svg" width="132" height="132" viewBox="0 0 132 132">
+            <rect width="132" height="132" fill="#321718"/>
+            <path d="M0 18L38 0l30 23-15 31L12 61zM68 23l39-17 25 28v32L93 55zM22 78l31-20 39 21-8 38-52 15L0 112zM91 82l41-18v68H85z" fill="#783031"/>
+            <path d="M12 6l26 13-17 25L0 37zM58 55l27-18 20 21-19 21zM42 96l31-12 16 25-37 17z" fill="#1c0d0e" opacity=".9"/>
+          </svg>
+          SVG
+
+          cat > _site/assets/camo_green.svg <<'SVG'
+          <svg xmlns="http://www.w3.org/2000/svg" width="132" height="132" viewBox="0 0 132 132">
+            <rect width="132" height="132" fill="#1b291d"/>
+            <path d="M0 18L38 0l30 23-15 31L12 61zM68 23l39-17 25 28v32L93 55zM22 78l31-20 39 21-8 38-52 15L0 112zM91 82l41-18v68H85z" fill="#365d39"/>
+            <path d="M12 6l26 13-17 25L0 37zM58 55l27-18 20 21-19 21zM42 96l31-12 16 25-37 17z" fill="#0d160f" opacity=".9"/>
+          </svg>
+          SVG
+
+          # Swap only the deployed copies to the generated SVG fallbacks.
+          sed -i             -e 's/camo_blue\.png/camo_blue.svg/g'             -e 's/camo_red\.png/camo_red.svg/g'             -e 's/camo_green\.png/camo_green.svg/g'             -e 's/icon-192\.png/rawdogs_icon.svg/g'             -e 's/icon-512\.png/rawdogs_icon.svg/g'             -e 's/rawdogs_icon\.png/rawdogs_icon.svg/g'             _site/index.html _site/sw.js _site/manifest.webmanifest
+
+          # Manifest: SVG icon has an intrinsic scalable size.
+          python3 - <<'PY'
+          import json
+          p = '_site/manifest.webmanifest'
+          data = json.load(open(p, encoding='utf-8'))
+          data['icons'] = [{
+              'src': 'assets/rawdogs_icon.svg',
+              'sizes': 'any',
+              'type': 'image/svg+xml',
+              'purpose': 'any'
+          }]
+          json.dump(data, open(p, 'w', encoding='utf-8'), indent=2)
+          PY
+
+          # Also publish a desktop browser version at /desktop/.
+          mkdir -p _site/desktop/js _site/desktop/weapons _site/desktop/assets
+          cp src/desktop/index.html _site/desktop/index.html
+          cp src/desktop/js/app.js _site/desktop/js/app.js
+          cp src/shared/engine.js _site/desktop/js/engine.js
+          cp weapons/l81.js _site/desktop/weapons/l81.js
+          cp weapons/sph2.js _site/desktop/weapons/sph2.js
+          cp _site/assets/*.svg _site/desktop/assets/
+          sed -i             -e 's/camo_blue\.png/camo_blue.svg/g'             -e 's/camo_red\.png/camo_red.svg/g'             -e 's/camo_green\.png/camo_green.svg/g'             -e 's/rawdogs\.ico/rawdogs_icon.svg/g'             _site/desktop/index.html
+
+          touch _site/.nojekyll
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
