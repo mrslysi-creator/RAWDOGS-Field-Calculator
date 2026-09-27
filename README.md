@@ -47,6 +47,75 @@ The files above are the preserved originals, not rebuilt substitutes.
 
 The Windows Build 2.4 application was verified to open and populate correctly and to use the RAWDOGS application icon.
 
+## Build 2.42 voice controls — development specification
+
+> **Important:** Build 2.42 is still in development. The commands below describe the agreed voice behaviour for 2.42; they are not a claim that the current stable Build 2.4 already supports them.
+
+### How RAWDOGS knows whether X/Y means USER ACTUAL or a TARGET
+
+Voice entry is **context based**. The player first tells RAWDOGS what they are working on. RAWDOGS then keeps that mode active until the entry is completed or cancelled.
+
+- **“User actual”** starts **USER ACTUAL mode**.
+- **“New target”** starts **TARGET mode** and selects the lowest-numbered empty Target slot.
+- **“Target”** also establishes TARGET context when target coordinates are spoken as part of the same command.
+- Once a mode is active, **“X [value]”** and **“Y [value]”** apply only to that active mode.
+- A bare **“X [value]”** or **“Y [value]”** while RAWDOGS is idle must **not** be accepted. RAWDOGS should ask the player to specify **User Actual** or **New Target**.
+- **“Over”** or **“Confirm”** completes the current entry.
+- **“Negative”** or **“Cancel”** cancels the current pending entry.
+
+Examples:
+
+```text
+User actual.
+X [value].
+Y [value].
+Over.
+```
+
+and:
+
+```text
+New target.
+X [value].
+Y [value].
+Over.
+```
+
+The coordinate values are always live player input. Any numbers shown in screenshots or development examples are examples only and are **not fixed cue values**.
+
+### Recognition colours and when calculation happens
+
+- Speech at or above the user's configured recognition-confidence threshold is shown **GREEN**.
+- A confidently recognised X or Y is entered into its matching field and that field is shown **GREEN**.
+- Speech below the confidence threshold is shown **RED** and must **not** alter USER ACTUAL, target coordinates, or an already accepted value.
+- The firing solution remains blank while coordinates are being compiled.
+- For a target, RAWDOGS only generates and displays **Bearing / Range / MIL** after the player says **“Over”** or **“Confirm”** and the required coordinates are present.
+
+### Agreed 2.42 cue words
+
+| Player cue | RAWDOGS behaviour |
+|---|---|
+| **“User actual”** | Enter USER ACTUAL mode. Following X/Y values belong to the player's current position. |
+| **“User actual X [value] Y [value]”** | Enter USER ACTUAL mode and accept the spoken X/Y values if recognition passes the confidence threshold. |
+| **“New target”** | Enter TARGET mode and arm the lowest-numbered empty Target slot. |
+| **“Target X [value] Y [value]”** | Enter TARGET mode and accept the spoken target coordinates if recognition passes the confidence threshold. |
+| **“X [value]”** | Set/replace X in the currently active mode only. |
+| **“Y [value]”** | Set/replace Y in the currently active mode only. |
+| **“Correction”** | Correct the current/last coordinate being compiled; the next valid X or Y replaces it. |
+| **“Over”** | Complete the current entry. If it is a complete target, calculate and display the firing solution. |
+| **“Confirm”** | Same completion role as Over. |
+| **“Negative”** | Reject/cancel the current pending entry without overwriting good confirmed data. |
+| **“Cancel”** | Same basic cancellation role as Negative. |
+| **“Clear Target 1”** through **“Clear Target 4”** | Empty that specific Target slot. The cleared slot becomes available again. |
+| **“Repeat bearing”** | Speak only the current bearing. |
+| **“Repeat range”** | Speak only the current range. |
+| **“Repeat mil”** | Speak only the current MIL value. |
+| **“Repeat solution”** | Speak Bearing, Range and MIL together. X/Y are not read back as part of the firing solution. |
+
+### Target-slot rule
+
+There are four fixed slots: **TARGET 1–4**. When a new target is requested, RAWDOGS uses the **lowest-numbered empty slot**. For example, if Targets 1, 2 and 4 are populated but Target 3 has been cleared, the next **“New target”** uses **Target 3**.
+
 ## Source in this repository
 
 The preserved Windows Build 2.4 executable contains its HTML/JavaScript calculator application internally. Those embedded calculator files were recovered from the preserved executable and committed under:
