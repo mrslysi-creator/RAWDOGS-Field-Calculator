@@ -107,6 +107,8 @@ The coordinate values are always live player input. Any numbers shown in screens
 | **“Negative”** | Reject/cancel the current pending entry without overwriting good confirmed data. |
 | **“Cancel”** | Same basic cancellation role as Negative. |
 | **“Clear Target 1”** through **“Clear Target 4”** | Empty that specific Target slot. The cleared slot becomes available again. |
+| **“Use Target 1”** through **“Use Target 4”** | Make that stored target the active target again, restoring its stored X/Y and firing solution to the main display. |
+| **“Recall Target 1”** through **“Recall Target 4”** | Same as Use Target. Make that stored target active again. |
 | **“Repeat bearing”** | Speak only the current bearing. |
 | **“Repeat range”** | Speak only the current range. |
 | **“Repeat mil”** | Speak only the current MIL value. |
@@ -114,7 +116,15 @@ The coordinate values are always live player input. Any numbers shown in screens
 
 ### Target-slot rule
 
-There are four fixed slots: **TARGET 1–4**. When a new target is requested, RAWDOGS uses the **lowest-numbered empty slot**. For example, if Targets 1, 2 and 4 are populated but Target 3 has been cleared, the next **“New target”** uses **Target 3**.
+There are four fixed slots: **TARGET 1–4**.
+
+- **“New target”** uses the **lowest-numbered empty slot**.
+- **“Clear Target [1–4]”** erases that slot and makes it available again.
+- **“Use Target [1–4]”** or **“Recall Target [1–4]”** brings an existing stored target back into active use.
+- Recalling a target restores that target's stored X/Y to the main Target display and restores its stored Bearing / Range / MIL to the firing-solution display.
+- Recalling one target does **not** delete or overwrite the other stored targets.
+
+Example: if Targets 1, 2 and 4 are populated but Target 3 has been cleared, the next **“New target”** uses **Target 3**. If the player later says **“Recall Target 2”**, Target 2 becomes active again with its stored firing solution shown.
 
 ## Source in this repository
 
