@@ -1,8 +1,16 @@
 # RAWDOGS Field Calculator
 
-Free, open-source field calculator for the **WARDOGS** community, created by **RAWDOGS**.
+Free, open-source field calculator for the **WARDOGS** community, created by **sly (mrslysi-creator)** under the RAWDOGS name.
 
 The project provides the same verified calculation engine and weapon calibration data across Windows, desktop web and a phone-friendly Progressive Web App, with the calculator source and data visible in this repository.
+
+## Support the creator
+
+The RAWDOGS Field Calculator is created and maintained by **sly (mrslysi-creator)** for the WARDOGS community.
+
+[Buy sly a coffee](https://buymeacoffee.com/silvesta)
+
+Contributions go to **sly personally**, in appreciation of the time and work put into the calculator. They are **not payments to the RAWDOGS clan or a clan fund**. Support is entirely optional, and the calculator remains free and open-source.
 
 ## Use / download
 
