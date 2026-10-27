@@ -10,7 +10,7 @@ The RAWDOGS Field Calculator is created and maintained by **sly (mrslysi-creator
 
 [Buy sly a coffee](https://buymeacoffee.com/silvesta)
 
-Contributions go to **sly personally**, in appreciation of the time and work put into the calculator. They are **not payments to the RAWDOGS clan or a clan fund**. Support is entirely optional, and the calculator remains free and open-source.
+All contributions go to me and are gratefully received for my time and effort.
 
 ## Use / download
 
