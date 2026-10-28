@@ -45,6 +45,12 @@ The files above are the preserved originals, not rebuilt substitutes.
 | Windows Build 2.4 EXE | `aabf819039ef62a2e20051c85f7cbd1d08bb78b7b7997def17f3687be1d3cbe7` |
 | Phone/PWA Build 0.1 ZIP | `a66f6835dd7ac68f128cfc1b67c9eb5121cd0facc8a167f82861e0eb446a46be` |
 
+### Build 2.4.1 — optional coffee-button update
+
+**[Download the original Field Calculator Build 2.4.1 Windows preview (.EXE with embedded RAWDOGS icon)](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/releases/tag/v2.4.1-preview)**
+
+The original browser apps also include the voluntary **☕ BUY ME A COFFEE** control, with no new download needed: [phone/PWA](https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/) and [desktop web](https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/desktop/). The original Build 2.4 Windows download above is **preserved unchanged**. Build 2.4.1 is a separate Windows preview pending owner testing.
+
 ## Windows voice-controlled preview (v0.9.4)
 
 **Experimental Windows-native preview — not yet verified by the owner on Windows.** This does not replace stable Windows Build 2.4, the desktop web app or the Phone/PWA.

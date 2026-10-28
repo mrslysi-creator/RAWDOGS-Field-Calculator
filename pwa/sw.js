@@ -1,4 +1,4 @@
-const CACHE='rawdogs-field-calc-phone-b001';
+const CACHE='rawdogs-field-calc-phone-b002';
 const ASSETS=[
   './','./index.html','./manifest.webmanifest',
   './assets/rawdogs_icon.png','./assets/icon-192.png','./assets/icon-512.png',

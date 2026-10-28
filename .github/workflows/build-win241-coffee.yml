@@ -1,0 +1,124 @@
+name: Build original RAWDOGS Field Calculator 2.4.1 Windows preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/desktop/index.html'
+      - 'builds/windows/2.4.1/**'
+      - '.github/workflows/build-win241-coffee.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build original Windows EXE, verify icon, publish Windows and phone ZIPs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Prepare Go compiler
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+      - name: Restore original RAWDOGS artwork and calculator files
+        shell: bash
+        run: |
+          set -euo pipefail
+          printf '%s  %s\n' '18a19816fd0ac48220786df259f1cd7e478b10293e625d1dd7f1d0b13eb1b56b' 'builds/windows/2.4.1/RAWDOGS_Field_Calculator.ico' | sha256sum --check
+          mkdir -p /tmp/rawdogs-pwa
+          unzip -q downloads/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_1.zip -d /tmp/rawdogs-pwa
+          mkdir -p builds/windows/2.4.1/app/js builds/windows/2.4.1/app/weapons builds/windows/2.4.1/app/assets
+          cp src/desktop/index.html builds/windows/2.4.1/app/index.html
+          cp src/desktop/js/app.js builds/windows/2.4.1/app/js/app.js
+          cp src/shared/engine.js builds/windows/2.4.1/app/js/engine.js
+          cp weapons/l81.js builds/windows/2.4.1/app/weapons/l81.js
+          cp weapons/sph2.js builds/windows/2.4.1/app/weapons/sph2.js
+          find /tmp/rawdogs-pwa -type f -path '*/assets/*' -exec cp -f {} builds/windows/2.4.1/app/assets/ \;
+          cp builds/windows/2.4.1/RAWDOGS_Field_Calculator.ico builds/windows/2.4.1/app/assets/rawdogs.ico
+          test -f builds/windows/2.4.1/app/assets/camo_blue.png
+          test -f builds/windows/2.4.1/app/assets/camo_red.png
+          test -f builds/windows/2.4.1/app/assets/camo_green.png
+          grep -Fq 'https://buymeacoffee.com/silvesta' builds/windows/2.4.1/app/index.html
+          grep -Fq 'https://buymeacoffee.com/silvesta' pwa/index.html
+          node --check builds/windows/2.4.1/app/js/app.js
+          node --check builds/windows/2.4.1/app/js/engine.js
+          node --check builds/windows/2.4.1/app/weapons/l81.js
+          node --check builds/windows/2.4.1/app/weapons/sph2.js
+          node --check pwa/js/mobile-app.js
+      - name: Compile approved icon into original Windows calculator EXE
+        shell: bash
+        working-directory: builds/windows/2.4.1
+        run: |
+          set -euo pipefail
+          go install github.com/akavel/rsrc@latest
+          "$(go env GOPATH)/bin/rsrc" -ico RAWDOGS_Field_Calculator.ico -o icon_amd64.syso
+          GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags '-s -w -H=windowsgui' -o 'RAWDOGS Field Calculator.exe' .
+      - name: Inspect embedded executable icon against approved ICO file
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet --disable-pip-version-check pefile
+          python3 - <<'PY'
+          import pefile, struct, hashlib
+          src='builds/windows/2.4.1/RAWDOGS_Field_Calculator.ico'
+          exe='builds/windows/2.4.1/RAWDOGS Field Calculator.exe'
+          ico=open(src,'rb').read()
+          assert hashlib.sha256(ico).hexdigest()=='18a19816fd0ac48220786df259f1cd7e478b10293e625d1dd7f1d0b13eb1b56b'
+          count=struct.unpack_from('<H',ico,4)[0]
+          expected=[]
+          for i in range(count):
+              size,offset=struct.unpack_from('<II',ico,6+16*i+8)
+              expected.append(ico[offset:offset+size])
+          pe=pefile.PE(exe)
+          resources={r.id:r for r in pe.DIRECTORY_ENTRY_RESOURCE.entries}
+          assert 3 in resources and 14 in resources,'Windows ICON or GROUP_ICON resource missing'
+          got=[]
+          for r in resources[3].directory.entries:
+              for lang in r.directory.entries:
+                  s=lang.data.struct
+                  got.append(pe.get_data(s.OffsetToData,s.Size))
+          assert len(expected)==6,'expected approved 6-size icon'
+          assert set(expected)==set(got),'Windows EXE icon pixels differ from approved icon!'
+          print('PASS: all six icon images exactly match approved ICO, embedded inside Windows EXE')
+          PY
+      - name: Package original Windows calculator and optional offline phone/PWA ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist /tmp/rawdogs-out/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2
+          cp 'builds/windows/2.4.1/RAWDOGS Field Calculator.exe' dist/
+          cp builds/windows/2.4.1/RAWDOGS_Field_Calculator.ico dist/
+          cp builds/windows/2.4.1/README_2_4_1.md dist/
+          ( cd dist && sha256sum 'RAWDOGS Field Calculator.exe' 'RAWDOGS_Field_Calculator.ico' > SHA256SUMS.txt )
+          ( cd dist && zip -q 'RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip' 'RAWDOGS Field Calculator.exe' RAWDOGS_Field_Calculator.ico README_2_4_1.md SHA256SUMS.txt )
+          cp -a pwa/. /tmp/rawdogs-out/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2/
+          mkdir -p /tmp/rawdogs-out/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2/assets
+          find /tmp/rawdogs-pwa -type f -path '*/assets/*' -exec cp -f {} /tmp/rawdogs-out/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2/assets/ \;
+          (
+            cd /tmp/rawdogs-out
+            zip -q -r "$GITHUB_WORKSPACE/dist/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2_COFFEE.zip" RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2
+          )
+          unzip -tqq dist/RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip
+          unzip -tqq dist/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2_COFFEE.zip
+          sha256sum dist/*.zip
+      - name: Update existing original-calculator v2.4.1 preview assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          windows='dist/RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip'
+          phone='dist/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2_COFFEE.zip'
+          if gh release view v2.4.1-preview >/dev/null 2>&1; then
+            gh release upload v2.4.1-preview "$windows" "$phone" --clobber
+            gh release edit v2.4.1-preview --prerelease --notes-file builds/windows/2.4.1/RELEASE_NOTES.md
+          else
+            gh release create v2.4.1-preview "$windows" "$phone" \
+              --target main \
+              --prerelease \
+              --title 'RAWDOGS Field Calculator Build 2.4.1 — Coffee + Embedded Icon' \
+              --notes-file builds/windows/2.4.1/RELEASE_NOTES.md
+          fi

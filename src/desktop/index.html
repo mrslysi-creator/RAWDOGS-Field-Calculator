@@ -44,7 +44,9 @@ button{cursor:pointer}
 .team-btn.selected.green{background:var(--green);color:#fff;border-color:#0e5f29;outline:3px solid #c4f5d1;outline-offset:1px}
 .team-warning{display:none;background:rgba(0,0,0,.80);border:1px solid var(--line);border-radius:10px;padding:9px;text-align:center;font-weight:900;letter-spacing:.04em}
 .team-warning.show{display:block}
-.position-presets{display:flex;gap:8px}.position-presets .selected{background:var(--paper-hi);outline:3px solid #f5e4b5;outline-offset:1px}
+.position-presets{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.position-presets .creator-support-desktop{display:inline-flex;align-items:center;justify-content:center;gap:6px;margin-left:auto;min-height:44px;padding:8px 12px;white-space:nowrap;text-decoration:none;font-size:12px}
+@media(max-width:460px){.position-presets .creator-support-desktop{flex:1 1 100%;margin-left:0}}.position-presets .selected{background:var(--paper-hi);outline:3px solid #f5e4b5;outline-offset:1px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
 .panel-title{font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;color:#fff}
 .field{display:grid;gap:4px}.field label{font-size:11px;font-weight:900;letter-spacing:.06em;color:#ddd;text-transform:uppercase}
@@ -109,6 +111,7 @@ input{width:100%;background:rgba(0,0,0,.65);color:#fff;border:1px solid rgba(255
       <div class="position-presets">
         <button class="paper-btn selected" id="positionA" type="button">A</button>
         <button class="paper-btn" id="positionB" type="button">B</button>
+        <a class="paper-btn creator-support-desktop" href="https://buymeacoffee.com/silvesta" target="_blank" rel="noopener noreferrer" aria-label="Buy sly a coffee, voluntary support">☕ BUY ME A COFFEE</a>
       </div>
 
       <div class="panel">
