@@ -21,7 +21,9 @@ https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/
 
 On a supported phone browser, use **Add to Home Screen** / **Install App**. After the initial successful load the PWA is designed to work offline.
 
-**Download the preserved Phone/PWA Build 0.1 ZIP:**  
+**[Download the updated Phone/PWA Build 0.2 ZIP — ☕ coffee button included](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/releases/download/v2.4.1-preview/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2_COFFEE.zip)**
+
+**Download the preserved original Phone/PWA Build 0.1 ZIP (without coffee button):**  
 https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/raw/refs/heads/main/downloads/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_1.zip
 
 ### Desktop web app
@@ -29,7 +31,13 @@ https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/raw/refs/heads/main/
 **Open the desktop browser version:**  
 https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/desktop/
 
-### Windows Build 2.4
+### Windows Build 2.4.1 — coffee and embedded icon
+
+**[Download updated original Windows calculator — Build 2.4.1 (☕ coffee button + embedded RAWDOGS icon)](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/releases/download/v2.4.1-preview/RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip)**
+
+This preview includes the updated standalone `RAWDOGS Field Calculator.exe`, original approved icon, checksums, and instructions. Keep your current stable Build 2.4 installed until you have tested this version on Windows.
+
+### Windows Build 2.4 — preserved original
 
 **Download the full stable Windows Build 2.4 ZIP:**  
 https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/raw/refs/heads/main/downloads/RAWDOGS_Field_Calculator_Build_2_4_Windows.zip
@@ -45,12 +53,6 @@ The files above are the preserved originals, not rebuilt substitutes.
 | Windows Build 2.4 EXE | `aabf819039ef62a2e20051c85f7cbd1d08bb78b7b7997def17f3687be1d3cbe7` |
 | Phone/PWA Build 0.1 ZIP | `a66f6835dd7ac68f128cfc1b67c9eb5121cd0facc8a167f82861e0eb446a46be` |
 
-### Build 2.4.1 — optional coffee-button update
-
-**[Download the original Field Calculator Build 2.4.1 Windows preview (.EXE with embedded RAWDOGS icon)](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/releases/tag/v2.4.1-preview)**
-
-The original browser apps also include the voluntary **☕ BUY ME A COFFEE** control, with no new download needed: [phone/PWA](https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/) and [desktop web](https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/desktop/). The original Build 2.4 Windows download above is **preserved unchanged**. Build 2.4.1 is a separate Windows preview pending owner testing.
-
 ## Windows voice-controlled preview (v0.9.4)
 
 **Experimental Windows-native preview — not yet verified by the owner on Windows.** This does not replace stable Windows Build 2.4, the desktop web app or the Phone/PWA.
@@ -65,9 +67,11 @@ The same **AGPL-3.0** code licence and separate **RAWDOGS branding provisions** 
 
 | Build | Platform | Status |
 |---|---|---|
-| **2.4** | Windows desktop | Current stable reference build |
-| **0.1** | Phone / PWA | Published through GitHub Pages |
-| **Web** | Desktop browser | Published through GitHub Pages |
+| **2.4** | Windows desktop | Preserved stable reference download (without coffee button) |
+| **2.4.1** | Windows desktop | ☕ Coffee button and approved embedded icon — preview download |
+| **0.2** | Phone / PWA | ☕ Coffee button — live GitHub Pages and ZIP download |
+| **Web** | Desktop browser | ☕ Coffee button — live GitHub Pages |
+| **0.1** | Phone / PWA | Preserved original ZIP (without coffee button) |
 
 The Windows Build 2.4 application was verified to open and populate correctly and to use the RAWDOGS application icon.
 
