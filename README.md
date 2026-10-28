@@ -45,6 +45,16 @@ The files above are the preserved originals, not rebuilt substitutes.
 | Windows Build 2.4 EXE | `aabf819039ef62a2e20051c85f7cbd1d08bb78b7b7997def17f3687be1d3cbe7` |
 | Phone/PWA Build 0.1 ZIP | `a66f6835dd7ac68f128cfc1b67c9eb5121cd0facc8a167f82861e0eb446a46be` |
 
+## Windows voice-controlled preview (v0.9.4)
+
+**Experimental Windows-native preview — not yet verified by the owner on Windows.** This does not replace stable Windows Build 2.4, the desktop web app or the Phone/PWA.
+
+[Download v0.9.4 Preview Windows EXE + complete Go source ZIP](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/releases/download/v0.9.4-preview/RAWDOGS_Voice_Controlled_Field_Calculator_v0.9.4_Clean_Walkman_WINDOWS_EXE_AND_SOURCE.zip)
+
+The original ZIP contains the native EXE, full Go source, UI assets, an 87-step guided-tour script and a testing checklist. Piper and Vosk packs are not bundled. Check the ZIP's README before running, and keep your current working installation. Archive SHA-256: `5655d1d7c0a83bbb8c0bfad3e5e555bac8b28716d773b4f204de514b1e32ab61`.
+
+The same **AGPL-3.0** code licence and separate **RAWDOGS branding provisions** apply. The software remains free, with no compulsory donations or adverts. See [preview notes](previews/v0.9.4/README.md).
+
 ## Current builds
 
 | Build | Platform | Status |

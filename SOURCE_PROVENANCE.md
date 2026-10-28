@@ -31,3 +31,7 @@ The preserved Build 2.4 checksum file is retained at:
 `builds/windows/2.4/SHA256.txt`
 
 That file is the reference for checking the original stable Windows EXE and icon.
+
+## Windows-native voice preview v0.9.4 (28 October 2026)
+
+The untouched preview ZIP (Windows EXE, complete Go source, images, checklists and checksums) is available as a GitHub pre-release and staged from checked base64 fragments under `previews/v0.9.4/`. This new native Win32/Go application is a separate experimental series from archived browser-wrapper Build 2.4. No claim is made that it has passed Windows acceptance testing. AGPL-3.0 and the separate RAWDOGS branding terms are unchanged.
