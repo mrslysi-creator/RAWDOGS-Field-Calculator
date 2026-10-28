@@ -1,0 +1,101 @@
+name: Build RAWDOGS Field Calculator 2.4.1 Windows preview
+
+on:
+  push:
+    branches: [build-2.4.1-coffee-icon-preview]
+    paths:
+      - 'src/desktop/index.html'
+      - 'builds/windows/2.4.1/**'
+      - '.github/workflows/build-win241-coffee.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare Go and icon compiler
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+      - name: Reuse exact original Build 2.4 assets and icon
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/rawdogs-build-24 /tmp/rawdogs-pwa
+          unzip -q downloads/RAWDOGS_Field_Calculator_Build_2_4_Windows.zip -d /tmp/rawdogs-build-24
+          unzip -q downloads/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_1.zip -d /tmp/rawdogs-pwa
+          ico="$(find /tmp/rawdogs-build-24 -type f -iname '*.ico' | head -n 1)"
+          test -n "$ico" || { echo 'Original RAWDOGS ICO missing; refuse to publish an iconless EXE'; exit 1; }
+          echo "Using original ICO: $ico"
+          cp "$ico" builds/windows/2.4.1/RAWDOGS_Field_Calculator.ico
+          mkdir -p builds/windows/2.4.1/app/js builds/windows/2.4.1/app/weapons builds/windows/2.4.1/app/assets
+          cp src/desktop/index.html builds/windows/2.4.1/app/index.html
+          cp src/desktop/js/app.js builds/windows/2.4.1/app/js/app.js
+          cp src/shared/engine.js builds/windows/2.4.1/app/js/engine.js
+          cp weapons/l81.js builds/windows/2.4.1/app/weapons/l81.js
+          cp weapons/sph2.js builds/windows/2.4.1/app/weapons/sph2.js
+          find /tmp/rawdogs-pwa -type f -path '*/assets/*' -exec cp -f {} builds/windows/2.4.1/app/assets/ \;
+          test -f builds/windows/2.4.1/app/assets/camo_green.png
+          test -f builds/windows/2.4.1/app/assets/camo_blue.png
+          test -f builds/windows/2.4.1/app/assets/camo_red.png
+          cp builds/windows/2.4.1/RAWDOGS_Field_Calculator.ico builds/windows/2.4.1/app/assets/rawdogs.ico
+          grep -Fq 'https://buymeacoffee.com/silvesta' builds/windows/2.4.1/app/index.html
+          node --check builds/windows/2.4.1/app/js/app.js
+          node --check builds/windows/2.4.1/app/js/engine.js
+          node --check builds/windows/2.4.1/app/weapons/l81.js
+          node --check builds/windows/2.4.1/app/weapons/sph2.js
+
+      - name: Compile the icon INTO the executable at build time
+        shell: bash
+        working-directory: builds/windows/2.4.1
+        run: |
+          set -euo pipefail
+          go install github.com/akavel/rsrc@latest
+          "$(go env GOPATH)/bin/rsrc" -ico RAWDOGS_Field_Calculator.ico -o icon_amd64.syso
+          GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -trimpath -ldflags '-s -w -H=windowsgui' -o RAWDOGS_Field_Calculator_Build_2_4_1_Preview.exe .
+
+      - name: Check embedded Windows icon resource and package
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check --quiet pefile
+          python3 - <<'PY'
+          import pefile
+          exe = 'builds/windows/2.4.1/RAWDOGS_Field_Calculator_Build_2_4_1_Preview.exe'
+          pe = pefile.PE(exe)
+          found = set()
+          for resource in pe.DIRECTORY_ENTRY_RESOURCE.entries:
+              found.add(resource.id)
+          assert 3 in found and 14 in found, f'icon resources missing: {found}'
+          print('PASS: RT_ICON and RT_GROUP_ICON embedded in compiled Windows EXE')
+          PY
+          mkdir -p dist
+          cp builds/windows/2.4.1/RAWDOGS_Field_Calculator_Build_2_4_1_Preview.exe dist/
+          cp builds/windows/2.4.1/RAWDOGS_Field_Calculator.ico dist/
+          cp builds/windows/2.4.1/README_2_4_1.md dist/
+          (cd dist && sha256sum RAWDOGS_Field_Calculator_Build_2_4_1_Preview.exe RAWDOGS_Field_Calculator.ico > SHA256SUMS.txt)
+          (cd dist && zip -q RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip \
+            RAWDOGS_Field_Calculator_Build_2_4_1_Preview.exe RAWDOGS_Field_Calculator.ico README_2_4_1.md SHA256SUMS.txt)
+          unzip -tq dist/RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip
+
+      - name: Upload checked Windows ZIP to independent Build 2.4.1 pre-release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          zip=dist/RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip
+          if gh release view v2.4.1-preview >/dev/null 2>&1; then
+            gh release upload v2.4.1-preview "$zip" --clobber
+            gh release edit v2.4.1-preview --prerelease --notes-file builds/windows/2.4.1/RELEASE_NOTES.md
+          else
+            gh release create v2.4.1-preview "$zip" \
+              --target "$GITHUB_SHA" \
+              --prerelease \
+              --title 'RAWDOGS Field Calculator Build 2.4.1 — Coffee + Icon Preview' \
+              --notes-file builds/windows/2.4.1/RELEASE_NOTES.md
+          fi
