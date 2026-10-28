@@ -1,14 +1,21 @@
-# Changelog
+# Release history
 
-## Windows Build 2.4
+## Windows Field Calculator — 2.4.1
 
-- Current stable Windows reference build.
-- Application launch and population verified.
-- RAWDOGS application icon verified.
-- This build is being preserved unchanged while the public source repository is assembled.
+- Windows 64-bit portable application with embedded RAWDOGS icon.
+- Manual firing-position and target-coordinate workflow.
+- Game-calibrated L81 and SPH-2 elevation solutions.
+- Team colours, A/B firing positions, and target recall.
+- Packaged with installation instructions and SHA-256 checksums.
 
-## Phone / PWA Build 0.1
+## Phone / PWA — 0.2
 
-- Initial phone-friendly PWA package prepared.
-- Browser and phone testing still pending.
-- Intended for later publication through GitHub Pages after validation.
+- Phone-friendly calculator with installable home-screen icon.
+- Offline-capable service worker and original camouflage artwork.
+- Shared calculations and weapon calibration data.
+- Target history and team-based interface.
+
+## Desktop browser
+
+- Browser interface with the same shared engine and weapon profiles.
+- Live at https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/desktop/

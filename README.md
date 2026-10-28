@@ -1,129 +1,73 @@
 # RAWDOGS Field Calculator
 
-Free, open-source field calculator for the **WARDOGS** community, created by **sly (mrslysi-creator)** under the RAWDOGS name.
+**Free, open-source field calculator for the WARDOGS community.**
 
-The project provides the same verified calculation engine and weapon calibration data across Windows, desktop web and a phone-friendly Progressive Web App, with the calculator source and data visible in this repository.
+RAWDOGS Field Calculator provides fast manual fire-control calculations for in-game L81 mortar and SPH-2 artillery. Enter your firing position and target coordinates to calculate bearing, range and the available MIL elevation solution. All calculations use the project's game-specific calibration data.
 
-## Support the creator
+## Open the calculator
 
-The RAWDOGS Field Calculator is created and maintained by **sly (mrslysi-creator)** for the WARDOGS community.
+| Version | Launch or download |
+| --- | --- |
+| **Phone / PWA** | [Open mobile calculator](https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/) |
+| **Desktop web** | [Open desktop calculator](https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/desktop/) |
+| **Windows 64-bit** | [Download Windows application](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/releases/download/v2.4.1-preview/RAWDOGS_Field_Calculator_Windows_2.4.1.zip) |
+| **Phone / PWA package** | [Download phone application files](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/releases/download/v2.4.1-preview/RAWDOGS_Field_Calculator_Phone_0.2.zip) |
 
-[Buy sly a coffee](https://buymeacoffee.com/silvesta)
+**[All downloads and release details](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/releases/tag/v2.4.1-preview)**
 
-All contributions go to me and are gratefully received for my time and effort.
+The web apps open directly in a browser. You can install the phone version using **Add to Home Screen** / **Install App** in a supported mobile browser. Once installed and fully loaded, the PWA is designed to work without an internet connection. The Windows application runs locally and does not operate a localhost web server.
 
-## Use / download
+## Features
 
-### Phone app / PWA
+- **L81 mortar** — range, bearing and calibrated elevation (MIL).
+- **SPH-2 / SPA** — game-calibrated elevation solutions, including low and high arcs where applicable.
+- **Team colours** — blue, red and green camouflage themes.
+- **A/B firing positions** — save and switch between two mortar-position presets.
+- **Target history** — recall recent targets while maintaining your firing-position coordinates.
+- **Manual coordinate entry** — reference name, X and Y for position and target.
+- **Offline-capable** — local Windows operation and installable phone PWA.
+- **No adverts, accounts or tracking.**
 
-**Open the phone app:**  
-https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/
+### Quick start
 
-On a supported phone browser, use **Add to Home Screen** / **Install App**. After the initial successful load the PWA is designed to work offline.
+1. Choose your team colour and the weapon.
+2. Set your firing position using **A** or **B**, then enter its coordinates.
+3. Enter the target X/Y coordinates and optionally a reference name.
+4. Select **CALCULATE** to obtain bearing, range and MIL.
+5. Use **NEW TARGET** to clear the target while keeping the saved firing position.
 
-**[Download the updated Phone/PWA Build 0.2 ZIP — ☕ coffee button included](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/releases/download/v2.4.1-preview/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2_COFFEE.zip)**
+The calculator is intended for the **WARDOGS game**. It is not a real-world navigation or artillery fire-control system.
 
-**Download the preserved original Phone/PWA Build 0.1 ZIP (without coffee button):**  
-https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/raw/refs/heads/main/downloads/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_1.zip
+## Windows installation
 
-### Desktop web app
+Download the Windows ZIP above and extract it completely into a folder. Run **`RAWDOGS Field Calculator.exe`**. The executable contains the RAWDOGS application icon and opens in a browser application window using Edge, Chrome or Brave when available. Windows may display a SmartScreen prompt because this community application is not code-signed.
 
-**Open the desktop browser version:**  
-https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/desktop/
+**Windows build 2.4.1** is currently provided as a public testing release. See [Windows installation notes](docs/INSTALL-WINDOWS.md).
 
-### Windows Build 2.4.1 — coffee and embedded icon
+## Phone installation
 
-**[Download updated original Windows calculator — Build 2.4.1 (☕ coffee button + embedded RAWDOGS icon)](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/releases/download/v2.4.1-preview/RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip)**
+Open the [mobile app](https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/) in a supported phone browser, then select **Add to Home Screen** or **Install App**. See [phone installation notes](docs/INSTALL-PWA.md).
 
-This preview includes the updated standalone `RAWDOGS Field Calculator.exe`, original approved icon, checksums, and instructions. Keep your current stable Build 2.4 installed until you have tested this version on Windows.
+## Source code
 
-### Windows Build 2.4 — preserved original
+The repository includes the browser applications, the shared calculator engine, weapon calibration profiles, and the Windows launcher build files.
 
-**Download the full stable Windows Build 2.4 ZIP:**  
-https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/raw/refs/heads/main/downloads/RAWDOGS_Field_Calculator_Build_2_4_Windows.zip
+| Directory | Contents |
+| --- | --- |
+| `pwa/` | Phone/PWA source, offline service worker, and artwork |
+| `src/desktop/` | Desktop browser interface |
+| `src/shared/` | Shared calculator engine |
+| `weapons/` | L81 and SPH-2 calibration data |
+| `builds/windows/2.4.1/` | Windows launcher source and packaging notes |
+| `.github/workflows/` | Web deployment and Windows build automation |
+| `docs/` | Installation and technical documentation |
 
-**Download the standalone Build 2.4 EXE:**  
-https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/raw/refs/heads/main/downloads/RAWDOGS%20Field%20Calculator.exe
-
-The files above are the preserved originals, not rebuilt substitutes.
-
-| File | SHA-256 |
-|---|---|
-| Windows Build 2.4 ZIP | `92935616dd6fe8bd3e928efa8bc82144cf46915ce53ec7b2e4e8a953493d2fb8` |
-| Windows Build 2.4 EXE | `aabf819039ef62a2e20051c85f7cbd1d08bb78b7b7997def17f3687be1d3cbe7` |
-| Phone/PWA Build 0.1 ZIP | `a66f6835dd7ac68f128cfc1b67c9eb5121cd0facc8a167f82861e0eb446a46be` |
-
-## Windows voice-controlled preview (v0.9.4)
-
-**Experimental Windows-native preview — not yet verified by the owner on Windows.** This does not replace stable Windows Build 2.4, the desktop web app or the Phone/PWA.
-
-[Download v0.9.4 Preview Windows EXE + complete Go source ZIP](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/releases/download/v0.9.4-preview/RAWDOGS_Voice_Controlled_Field_Calculator_v0.9.4_Clean_Walkman_WINDOWS_EXE_AND_SOURCE.zip)
-
-The original ZIP contains the native EXE, full Go source, UI assets, an 87-step guided-tour script and a testing checklist. Piper and Vosk packs are not bundled. Check the ZIP's README before running, and keep your current working installation. Archive SHA-256: `5655d1d7c0a83bbb8c0bfad3e5e555bac8b28716d773b4f204de514b1e32ab61`.
-
-The same **AGPL-3.0** code licence and separate **RAWDOGS branding provisions** apply. The software remains free, with no compulsory donations or adverts. See [preview notes](previews/v0.9.4/README.md).
-
-## Current builds
-
-| Build | Platform | Status |
-|---|---|---|
-| **2.4** | Windows desktop | Preserved stable reference download (without coffee button) |
-| **2.4.1** | Windows desktop | ☕ Coffee button and approved embedded icon — preview download |
-| **0.2** | Phone / PWA | ☕ Coffee button — live GitHub Pages and ZIP download |
-| **Web** | Desktop browser | ☕ Coffee button — live GitHub Pages |
-| **0.1** | Phone / PWA | Preserved original ZIP (without coffee button) |
-
-The Windows Build 2.4 application was verified to open and populate correctly and to use the RAWDOGS application icon.
-
-## Source in this repository
-
-The preserved Windows Build 2.4 executable contains its HTML/JavaScript calculator application internally. Those embedded calculator files were recovered from the preserved executable and committed under:
-
-- `src/desktop/index.html`
-- `src/desktop/js/app.js`
-- `src/shared/engine.js`
-- `weapons/l81.js`
-- `weapons/sph2.js`
-
-The phone/PWA source from the preserved Phone/PWA Build 0.1 archive is under `pwa/`.
-
-The L81 data, SPH-2 data and shared calculation engine in the PWA archive were verified to be byte-for-byte identical to the corresponding calculator code embedded in Windows Build 2.4.
-
-### Windows launcher source
-
-The preserved Build 2.4 ZIP contains the finished Windows EXE, icon, shortcut scripts, checksums and build notes, but it does **not** contain the original Go source for the small Windows launcher wrapper that embeds/opens the calculator.
-
-For that reason this repository does not pretend that wrapper source was recovered when it was not. The calculator itself is source-visible; the preserved Build 2.4 EXE remains the stable binary reference.
-
-## Repository layout
-
-```text
-src/
-  desktop/          desktop UI recovered from Build 2.4
-  shared/           shared calculator engine
-
-weapons/            verified L81 and SPH-2 calibration data
-pwa/                phone/PWA source
-downloads/          preserved downloadable builds
-builds/windows/2.4/ Build 2.4 notes, shortcut scripts and checksums
-docs/               installation and calculation documentation
-.github/workflows/  GitHub Pages deployment
-```
-
-## Phone / PWA notes
-
-The PWA includes the web-app manifest and service worker required for installation/offline use. The live deployment restores the original RAWDOGS PNG icon and camouflage artwork directly from the preserved Phone/PWA Build 0.1 package.
-
-The PWA intentionally does **not** include the later experimental SPH-2 pitch/terrain compensation work; that remains future work after controlled testing.
+The underlying calculator mathematics and calibration data are shared between the published interfaces. For more details, see [How it works](docs/HOW-IT-WORKS.md) and [Source provenance](SOURCE_PROVENANCE.md).
 
 ## Licence
 
-Project code is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**. See [LICENSE](LICENSE).
+The source code is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**. See [LICENSE](LICENSE).
 
-The AGPL allows people to study, run, modify and redistribute the code under its terms, and requires corresponding source to remain available when modified versions are distributed or provided as a network service.
+RAWDOGS names, badges, logos and original artwork have separate branding provisions; see [TRADEMARKS.md](TRADEMARKS.md).
 
-The **RAWDOGS** name, logos, badges and original branding are treated separately from the software licence. See [TRADEMARKS.md](TRADEMARKS.md).
-
-## Provenance
-
-See [SOURCE_PROVENANCE.md](SOURCE_PROVENANCE.md) for the recovery/source relationship between Windows Build 2.4 and Phone/PWA Build 0.1.
+*Created for the WARDOGS community by sly / RAWDOGS.*

@@ -1,16 +1,11 @@
-# Phone / PWA installation
+# RAWDOGS Field Calculator — phone installation
 
-The phone version is being prepared as a Progressive Web App (PWA).
+Open the phone calculator:
 
-## Current status
+**https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/**
 
-**Phone / PWA Build 0.1** has been prepared, but final browser and phone testing is still in progress.
+In a compatible Android or iPhone browser, select **Add to Home Screen** or **Install App**, then launch it using the RAWDOGS icon.
 
-When the public PWA is enabled:
+The phone/PWA version is designed to calculate offline after its first successful load and installation. Its service worker caches the calculator's JavaScript, verified calibration data and original RAWDOGS graphics. An internet connection is needed for the first install and for visiting any external website.
 
-1. Open the published RAWDOGS Field Calculator web address on the phone.
-2. Use the browser's **Add to Home Screen** or **Install App** option.
-3. Launch it from the new home-screen icon.
-4. After the first successful load, offline operation is intended where supported by the browser.
-
-The public GitHub Pages address will be added here once deployment is enabled and validated.
+The [phone application ZIP](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/releases/download/v2.4.1-preview/RAWDOGS_Field_Calculator_Phone_0.2.zip) contains the source files for hosting or inspection. Opening the ZIP's `index.html` locally is sufficient for some browser testing, but service-worker installation requires HTTPS or localhost.

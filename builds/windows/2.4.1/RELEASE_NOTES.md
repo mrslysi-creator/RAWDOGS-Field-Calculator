@@ -1,17 +1,21 @@
-# RAWDOGS Field Calculator Build 2.4.1 — Original Calculator + Coffee Button + Icon
+# RAWDOGS Field Calculator
 
-**This is the ORIGINAL manually operated RAWDOGS Field Calculator, NOT RAWDOGS Voice Controlled Field Calculator.**
+## Available applications
 
-## Changes versus original stable Build 2.4
-- Added voluntary **☕ BUY ME A COFFEE** control beside the A/B firing-position selectors.
-- Rebuilt a portable Windows EXE named **`RAWDOGS Field Calculator.exe`**, with the approved RAWDOGS icon **embedded directly in the EXE at compile time**.
-- Included a copy of the original approved `.ico` and SHA-256 checksum manifest in the ZIP.
-- Updated the project's original desktop browser and phone/PWA sites with the same voluntary support link, in the positions selected by the owner.
+**Windows 64-bit — Build 2.4.1**
 
-No change to artillery calculations, weapon profiles, coordinate rules, camo files or other UI content; no advertisements, subscriptions, tracking or compulsory donations. Internet access is needed only if you choose to visit the coffee page.
+Download `RAWDOGS_Field_Calculator_Windows_2.4.1.zip`. Extract it and launch `RAWDOGS Field Calculator.exe`. The EXE contains the RAWDOGS icon.
 
-The [stable Build 2.4 ZIP](https://github.com/mrslysi-creator/RAWDOGS-Field-Calculator/blob/main/downloads/RAWDOGS_Field_Calculator_Build_2_4_Windows.zip) remains intact; this is a **separate preview** until Windows acceptance testing is complete.
+**Phone / PWA — Build 0.2**
 
-The voice-controlled project's original **v0.9.4** release is untouched.
+Download `RAWDOGS_Field_Calculator_Phone_0.2.zip` to access the complete phone application files, or launch the [phone app online](https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/).
 
-**Licence:** unchanged AGPL-3.0 with separate RAWDOGS branding terms.
+**Desktop browser**
+
+Use the [desktop web calculator](https://mrslysi-creator.github.io/RAWDOGS-Field-Calculator/desktop/) with no download needed.
+
+## Features
+
+Manually enter in-game firing-position and target coordinates to calculate bearing, range and calibrated MIL elevation for L81 mortars or SPH-2 artillery. Team-specific camouflage, A/B firing positions and recent target recall are supported.
+
+The software is free and open source under GNU AGPL-3.0. RAWDOGS artwork and trademarks have separate branding provisions. No adverts, account registration or tracking. The Windows build is a preview pending owner device testing.

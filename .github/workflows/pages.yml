@@ -25,15 +25,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf _site /tmp/rawdogs-pwa
-          mkdir -p _site _site/assets /tmp/rawdogs-pwa
+          rm -rf _site
+          mkdir -p _site _site/assets
 
-          # Publish the phone/PWA source.
+          # Publish the full phone/PWA app and its source artwork.
           cp -R pwa/. _site/
-
-          # Restore the exact original PNG artwork from the preserved PWA 0.1 package.
-          unzip -q downloads/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_1.zip -d /tmp/rawdogs-pwa
-          cp -f /tmp/rawdogs-pwa/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_1/assets/* _site/assets/
+          test -s _site/assets/rawdogs_icon.png
+          test -s _site/assets/camo_blue.png
+          test -s _site/assets/camo_green.png
+          test -s _site/assets/camo_red.png
 
           # Publish a desktop browser version at /desktop/ using the same verified maths/data.
           mkdir -p _site/desktop/js _site/desktop/weapons _site/desktop/assets

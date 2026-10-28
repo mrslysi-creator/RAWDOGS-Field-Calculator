@@ -1,23 +1,23 @@
-# RAWDOGS Field Calculator — Build 2.4.1 Preview
+# RAWDOGS Field Calculator — Windows 2.4.1
 
-**Original manual-coordinate RAWDOGS Field Calculator, not the voice-controlled project.**
+## Install and run
 
-This update adds one voluntary ☕ **BUY ME A COFFEE** button beside the A/B mortar-position controls in the Windows desktop app, and embeds the **user-approved RAWDOGS mortar icon inside the Windows EXE at compile/link time**. The phone and desktop browser apps have the same donation link in their requested positions.
+Extract the ZIP completely into a new folder, then launch `RAWDOGS Field Calculator.exe`.
 
-## Installation and use
-1. Download and fully extract `RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip` into a **new folder**.
-2. Double-click `RAWDOGS Field Calculator.exe`. The actual file contains the approved RAWDOGS icon — it is **not only a separate shortcut icon**.
-3. Confirm team selection, A/B positions, mortar solutions and old targets work as expected.
-4. Click `☕ BUY ME A COFFEE` only if you want to open https://buymeacoffee.com/silvesta in a browser. Donations are optional; no ads or paid features.
-5. If Explorer still shows a blank or generic icon, refresh its icon cache or make a new shortcut to this EXE. The icon-resource test confirms what is embedded, but display is determined by Windows.
+The application opens in Edge, Chrome or Brave application mode using local calculator files. It does not require a network connection for coordinate calculations or run a localhost web server.
 
-The app files are extracted to `%LOCALAPPDATA%\RAWDOGS Field Calculator\Build2_4_1` (isolated from stable Build 2.4). No local web server, voice component or background web service is needed. The calculator works offline; only the optional donation website requires internet.
+The RAWDOGS icon is embedded in the executable and supplied as a separate `.ico` file. The ZIP also includes `SHA256SUMS.txt` for file integrity checks.
 
-## Exactly what is preserved
-The stable Build 2.4 ZIP, original exe, original calculations, elevation tables, weapon logic and graphics are unchanged. Build 2.4.1 is a separate, untested Windows preview until you approve it on your own computer.
+## Check the calculator
 
-The approved `.ico` contains 16, 32, 48, 64, 128 and 256-pixel versions; source icon SHA-256:
-`18a19816fd0ac48220786df259f1cd7e478b10293e625d1dd7f1d0b13eb1b56b`.
+- Select a team and L81/SPH-2 weapon.
+- Enter and switch between A/B firing positions.
+- Enter a target and calculate bearing, range and elevation.
+- Verify team graphics and recent-target recall.
+- Close and relaunch the application normally.
+
+This Windows build is provided as a **preview** pending final on-device acceptance tests.
 
 ## Licence
-Same AGPL-3.0 software licence and separately reserved RAWDOGS branding provisions as the original repository.
+
+GNU AGPL-3.0. RAWDOGS name, logo and other branding are subject to the separate `TRADEMARKS.md` provisions in the repository.

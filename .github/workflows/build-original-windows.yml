@@ -1,4 +1,4 @@
-name: Build original RAWDOGS Field Calculator 2.4.1 Windows preview
+name: Package RAWDOGS Field Calculator for Windows and phone
 
 on:
   push:
@@ -6,7 +6,10 @@ on:
     paths:
       - 'src/desktop/index.html'
       - 'builds/windows/2.4.1/**'
-      - '.github/workflows/build-win241-coffee.yml'
+      - '.github/workflows/build-original-windows.yml'
+      - 'pwa/**'
+      - 'weapons/**'
+      - 'src/shared/**'
   workflow_dispatch:
 
 permissions:
@@ -14,7 +17,7 @@ permissions:
 
 jobs:
   build:
-    name: Build original Windows EXE, verify icon, publish Windows and phone ZIPs
+    name: Compile, verify and package the calculators
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
@@ -28,15 +31,13 @@ jobs:
         run: |
           set -euo pipefail
           printf '%s  %s\n' '18a19816fd0ac48220786df259f1cd7e478b10293e625d1dd7f1d0b13eb1b56b' 'builds/windows/2.4.1/RAWDOGS_Field_Calculator.ico' | sha256sum --check
-          mkdir -p /tmp/rawdogs-pwa
-          unzip -q downloads/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_1.zip -d /tmp/rawdogs-pwa
           mkdir -p builds/windows/2.4.1/app/js builds/windows/2.4.1/app/weapons builds/windows/2.4.1/app/assets
           cp src/desktop/index.html builds/windows/2.4.1/app/index.html
           cp src/desktop/js/app.js builds/windows/2.4.1/app/js/app.js
           cp src/shared/engine.js builds/windows/2.4.1/app/js/engine.js
           cp weapons/l81.js builds/windows/2.4.1/app/weapons/l81.js
           cp weapons/sph2.js builds/windows/2.4.1/app/weapons/sph2.js
-          find /tmp/rawdogs-pwa -type f -path '*/assets/*' -exec cp -f {} builds/windows/2.4.1/app/assets/ \;
+          cp -f pwa/assets/* builds/windows/2.4.1/app/assets/
           cp builds/windows/2.4.1/RAWDOGS_Field_Calculator.ico builds/windows/2.4.1/app/assets/rawdogs.ico
           test -f builds/windows/2.4.1/app/assets/camo_blue.png
           test -f builds/windows/2.4.1/app/assets/camo_red.png
@@ -93,18 +94,18 @@ jobs:
           cp builds/windows/2.4.1/RAWDOGS_Field_Calculator.ico dist/
           cp builds/windows/2.4.1/README_2_4_1.md dist/
           ( cd dist && sha256sum 'RAWDOGS Field Calculator.exe' 'RAWDOGS_Field_Calculator.ico' > SHA256SUMS.txt )
-          ( cd dist && zip -q 'RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip' 'RAWDOGS Field Calculator.exe' RAWDOGS_Field_Calculator.ico README_2_4_1.md SHA256SUMS.txt )
+          ( cd dist && zip -q 'RAWDOGS_Field_Calculator_Windows_2.4.1.zip' 'RAWDOGS Field Calculator.exe' RAWDOGS_Field_Calculator.ico README_2_4_1.md SHA256SUMS.txt )
           cp -a pwa/. /tmp/rawdogs-out/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2/
           mkdir -p /tmp/rawdogs-out/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2/assets
-          find /tmp/rawdogs-pwa -type f -path '*/assets/*' -exec cp -f {} /tmp/rawdogs-out/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2/assets/ \;
+          cp -f pwa/assets/* /tmp/rawdogs-out/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2/assets/
           (
             cd /tmp/rawdogs-out
-            zip -q -r "$GITHUB_WORKSPACE/dist/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2_COFFEE.zip" RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2
+            zip -q -r "$GITHUB_WORKSPACE/dist/RAWDOGS_Field_Calculator_Phone_0.2.zip" RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2
           )
           unzip -tqq dist/RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip
           unzip -tqq dist/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2_COFFEE.zip
           sha256sum dist/*.zip
-      - name: Update existing original-calculator v2.4.1 preview assets
+      - name: Publish RAWDOGS Field Calculator downloads
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -114,11 +115,14 @@ jobs:
           phone='dist/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2_COFFEE.zip'
           if gh release view v2.4.1-preview >/dev/null 2>&1; then
             gh release upload v2.4.1-preview "$windows" "$phone" --clobber
-            gh release edit v2.4.1-preview --prerelease --notes-file builds/windows/2.4.1/RELEASE_NOTES.md
+            for old in 'RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip' 'RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2_COFFEE.zip'; do
+              gh release delete-asset v2.4.1-preview "$old" --yes || true
+            done
+            gh release edit v2.4.1-preview --title 'RAWDOGS Field Calculator — Windows 2.4.1 and Phone 0.2' --prerelease --notes-file builds/windows/2.4.1/RELEASE_NOTES.md
           else
             gh release create v2.4.1-preview "$windows" "$phone" \
               --target main \
               --prerelease \
-              --title 'RAWDOGS Field Calculator Build 2.4.1 — Coffee + Embedded Icon' \
+              --title 'RAWDOGS Field Calculator — Windows 2.4.1 and Phone 0.2' \
               --notes-file builds/windows/2.4.1/RELEASE_NOTES.md
           fi
