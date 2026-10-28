@@ -111,8 +111,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          windows='dist/RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip'
-          phone='dist/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2_COFFEE.zip'
+          windows='dist/RAWDOGS_Field_Calculator_Windows_2.4.1.zip'
+          phone='dist/RAWDOGS_Field_Calculator_Phone_0.2.zip'
           if gh release view v2.4.1-preview >/dev/null 2>&1; then
             gh release upload v2.4.1-preview "$windows" "$phone" --clobber
             for old in 'RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip' 'RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2_COFFEE.zip'; do
