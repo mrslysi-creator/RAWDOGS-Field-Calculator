@@ -1,0 +1,37 @@
+name: Preserve original calculator artwork as source assets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/prepare-original-artwork.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  save-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy original PWA art into application source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/rawdogs-original
+          unzip -q downloads/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_1.zip -d /tmp/rawdogs-original
+          find /tmp/rawdogs-original -type f -path '*/assets/*' -print
+          mkdir -p pwa/assets
+          find /tmp/rawdogs-original -type f -path '*/assets/*' -exec cp -f {} pwa/assets/ \;
+          test -s pwa/assets/camo_blue.png
+          test -s pwa/assets/camo_green.png
+          test -s pwa/assets/camo_red.png
+          test -s pwa/assets/rawdogs_icon.png
+          test -s pwa/assets/icon-192.png
+          test -s pwa/assets/icon-512.png
+          git add -f pwa/assets/
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Store original RAWDOGS artwork alongside app source'
+            git push origin HEAD:main
+          fi
