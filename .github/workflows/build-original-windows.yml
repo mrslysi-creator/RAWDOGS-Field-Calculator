@@ -102,8 +102,8 @@ jobs:
             cd /tmp/rawdogs-out
             zip -q -r "$GITHUB_WORKSPACE/dist/RAWDOGS_Field_Calculator_Phone_0.2.zip" RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2
           )
-          unzip -tqq dist/RAWDOGS_Field_Calculator_Build_2_4_1_COFFEE_ICON_WINDOWS_PREVIEW.zip
-          unzip -tqq dist/RAWDOGS_Field_Calculator_Phone_PWA_Build_0_2_COFFEE.zip
+          unzip -tqq dist/RAWDOGS_Field_Calculator_Windows_2.4.1.zip
+          unzip -tqq dist/RAWDOGS_Field_Calculator_Phone_0.2.zip
           sha256sum dist/*.zip
       - name: Publish RAWDOGS Field Calculator downloads
         shell: bash
