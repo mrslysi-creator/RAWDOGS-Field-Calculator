@@ -76,6 +76,44 @@ input{width:100%;background:rgba(0,0,0,.65);color:#fff;border:1px solid rgba(255
 @media (max-width:850px){body{padding:10px}.app-stage{min-height:1060px}.app-shell{position:relative;width:calc(100vw - 54px)}.old-drawer{top:690px;left:0;width:calc(100vw - 54px);border-radius:0 0 14px 14px;padding-left:14px;transform:translateY(-280px)}.app-stage.drawer-open .old-drawer{transform:translateY(0)}.folder-tab{right:-36px;width:37px}}
 @media (max-width:520px){body{padding:6px}.app-shell{width:calc(100vw - 44px)}.inner{padding:10px;gap:9px}.brand{min-width:0;width:100%}.topbar{gap:8px}.team-row{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.team-btn{min-width:0;padding:8px 4px}.weapon-btn{width:100%;min-width:0}.result-value{font-size:24px}.result-grid.has-secondary{grid-template-columns:1fr 1fr}.actions{grid-template-columns:1fr 1fr}.paper-btn{min-height:40px}}
 </style>
+<script>
+// Desktop diagnostics are shown only when an application script fails.
+// Keep all working calculator appearance and maths unchanged.
+(function(){
+  var errors=[];
+  window.RAWDOGS_DESKTOP_ERRORS=errors;
+  function showError(){
+    var note=document.getElementById('resultNote');
+    var name=document.getElementById('resultName');
+    if(!note) return;
+    if(name) name.textContent='Desktop calculation error';
+    note.textContent='Desktop error: '+errors[0]+'. Please send a screenshot of this message.';
+  }
+  window.addEventListener('error',function(event){
+    var el=event.target;
+    var scriptError=el && el.tagName==='SCRIPT';
+    var jsError=!!event.message;
+    if(!scriptError&&!jsError)return;
+    var msg=scriptError?'Script did not load: '+(el.getAttribute('src')||'unknown script'):
+      String(event.message||'Unknown JavaScript error');
+    errors.push(msg.slice(0,220));
+    setTimeout(showError,0);
+  },true);
+  window.addEventListener('unhandledrejection',function(event){
+    var reason=event.reason;
+    errors.push(('Unhandled error: '+(reason&&reason.message||String(reason))).slice(0,220));
+    setTimeout(showError,0);
+  });
+  window.addEventListener('load',function(){
+    setTimeout(function(){
+      if(!window.RAWDOGS_APP_STARTED&&!errors.length){
+        errors.push('Desktop app initialisation did not finish');
+        showError();
+      }
+    },150);
+  });
+})();
+</script>
 <script src="weapons/l81.js"></script>
 <script src="weapons/sph2.js"></script>
 <script src="js/engine.js"></script>
