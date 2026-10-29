@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'src/desktop/index.html'
+      - 'src/desktop/js/**'
       - 'builds/windows/2.4.1/**'
       - '.github/workflows/build-original-windows.yml'
       - 'pwa/**'
