@@ -264,4 +264,5 @@ newTargetBtn.addEventListener('click',()=>{
 renderWeaponMenu();
 if(!weapons[activeWeaponId]||!weapons[activeWeaponId].enabled)activeWeaponId=Object.values(weapons).find(w=>w.enabled)?.id||'';
 setActiveWeapon(activeWeaponId);renderOldTargets();
+window.RAWDOGS_APP_STARTED=true;
 })();
