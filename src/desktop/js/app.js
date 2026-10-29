@@ -1,6 +1,38 @@
 (function(){
 'use strict';
 
+// Windows EXE runs the desktop UI from file://. Some browsers deny Web Storage
+// for file origins or restrictive privacy settings. Calculations must still work.
+function makeStorageSafe(name){
+  const memory=new Map();
+  let backend=null;
+  try{
+    backend=window[name];
+    const probe='__rawdogs_storage_probe__';
+    backend.setItem(probe,'1');
+    backend.removeItem(probe);
+  }catch(_){backend=null}
+  return {
+    getItem(key){
+      if(backend){
+        try{return backend.getItem(key)}
+        catch(_){backend=null}
+      }
+      return memory.has(key)?memory.get(key):null;
+    },
+    setItem(key,value){
+      const str=String(value);
+      if(backend){
+        try{backend.setItem(key,str);return}
+        catch(_){backend=null}
+      }
+      memory.set(key,str);
+    }
+  };
+}
+const sessionStorage=makeStorageSafe('sessionStorage');
+const localStorage=makeStorageSafe('localStorage');
+
 const weapons=window.RAWDOGS_WEAPONS||{};
 const engine=window.RAWDOGS_ENGINE;
 if(!engine||!Object.keys(weapons).length){alert('RAWDOGS calculator files did not load correctly.');return}
