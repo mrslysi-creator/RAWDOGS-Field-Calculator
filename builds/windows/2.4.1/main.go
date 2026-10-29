@@ -69,18 +69,20 @@ func launch() error {
 
 func locateBrowser() (string, error) {
  candidates := []string{
-  filepath.Join(os.Getenv("ProgramFiles(x86)"),"Microsoft","Edge","Application","msedge.exe"),
-  filepath.Join(os.Getenv("ProgramFiles"),"Microsoft","Edge","Application","msedge.exe"),
+  // Prefer Chrome: it is already confirmed working for the hosted calculator.
+  // Edge can apply different file:// policies to the packaged desktop app.
   filepath.Join(os.Getenv("ProgramFiles"),"Google","Chrome","Application","chrome.exe"),
   filepath.Join(os.Getenv("ProgramFiles(x86)"),"Google","Chrome","Application","chrome.exe"),
   filepath.Join(os.Getenv("LOCALAPPDATA"),"Google","Chrome","Application","chrome.exe"),
+  filepath.Join(os.Getenv("ProgramFiles(x86)"),"Microsoft","Edge","Application","msedge.exe"),
+  filepath.Join(os.Getenv("ProgramFiles"),"Microsoft","Edge","Application","msedge.exe"),
   filepath.Join(os.Getenv("ProgramFiles"),"BraveSoftware","Brave-Browser","Application","brave.exe"),
   filepath.Join(os.Getenv("ProgramFiles(x86)"),"BraveSoftware","Brave-Browser","Application","brave.exe"),
  }
  for _, p := range candidates {
   if p != "" { if st,err:=os.Stat(p);err==nil&&!st.IsDir(){return p,nil} }
  }
- for _, name := range []string{"msedge.exe","chrome.exe","brave.exe"} {
+ for _, name := range []string{"chrome.exe","msedge.exe","brave.exe"} {
   if p,err:=exec.LookPath(name);err==nil{return p,nil}
  }
  return "", errors.New("Microsoft Edge, Chrome or Brave not found")
